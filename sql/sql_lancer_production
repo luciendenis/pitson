@@ -54,19 +54,11 @@ AS
 		END
 		ELSE 
 		BEGIN
-			-- Si le lot est en attente 
-			IF EXISTS (
-						SELECT Lot.IdLot
-						FROM Lot
-						WHERE Lot.EtatProduction = 'Attente'
-						)
-			BEGIN
-				UPDATE Lot 
-				SET Lot.EtatProduction = 'EnCour'
-				WHERE Lot.IdLot = @IdLot
-				SET @retour = 0;
-				SET @msg = 'Etat de la production mise à jour de Attente à En Cour'
-			END
+			UPDATE Lot 
+			SET Lot.EtatProduction = 'EnCour'
+			WHERE Lot.IdLot = @IdLot
+			SET @retour = 0;
+			SET @msg = 'Etat de la production mise à jour de Attente à En Cour'
 		END
 	END TRY
 
