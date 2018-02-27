@@ -5,17 +5,19 @@
 CREATE TABLE Machine
 (
 	IdPresse int PRIMARY KEY IDENTITY (1,1),
-	LibellePresse varchar(15) UNIQUE NOT NULL
+	LibellePresse TypeNomPresse UNIQUE NOT NULL,
+	EnService bit NOT NULL
 )
 GO
 
 CREATE TABLE Modele
 (
-	IdModel TypeIdModel PRIMARY KEY,
+	IdModele TypeIDModele PRIMARY KEY,
 	Diametre TypeMesure NOT NULL,
 	Obsolete BIT NOT NULL
 )
 GO
+
 
 CREATE TABLE Categorie
 (
@@ -27,11 +29,11 @@ GO
 
 CREATE TABLE Stock
 (
-	IdModel TypeIdModel REFERENCES Model (IdModel) NOT NULL,
-	IdCategorie TypeIdCategorie REFERENCES Categorie (IdCategorie) NOT NULL,
+	IdModele TypeIDModele REFERENCES Modele (IdModele) ON UPDATE CASCADE NOT NULL,
+	IdCategorie TypeCategorie REFERENCES Categorie (IdCategorie) NOT NULL,
 	QtStock int NOT NULL,
 	SeuilMini int NOT NULL,
-	PRIMARY KEY (IdModel, IdCategorie)
+	PRIMARY KEY (IdModele, IdCategorie)
 )
 GO 
 
@@ -39,9 +41,9 @@ CREATE TABLE Lot
 (
 	IdLot int PRIMARY KEY IDENTITY (1,1),
 	DateFabtication DATETIME NOT NULL,
-	EtatProduction TypeEtat NOT NULL,
-	EtatControl TypeEtat NOT NULL,
-	FOREIGN KEY (IdModel) REFERENCES Model (IDModel),
+	EtatProduction TypeEtat CHECK (EtatProduction IN ('Attente', 'EnCour', 'Termine')) NOT NULL,
+	EtatControl TypeEtat CHECK (EtatControl IN ('Attente', 'EnCour','Termine')) NOT NULL,
+	IdModele TypeIDModele REFERENCES Modele (IdModele) ON UPDATE CASCADE ,
 	MoyenneHL TypeStat NULL,
 	MoyenneHT TypeStat NULL,
 	MoyenneBL TypeStat NULL,
@@ -65,21 +67,23 @@ GO
 CREATE TABLE Piece
 (
 	IdPiece int PRIMARY KEY IDENTITY (1,1),
-	FOREIGN KEY (IdLot) REFERENCES Lot (IdLot),
-	FOREIGN KEY (IdCategorie) REFERENCES Categorie (IdCategorie),
+	IdLot int NOT NULL,
+	IdCategorie TypeCategorie NOT NULL,
 	DimensionHL TypeMesure NOT NULL,
 	DimensionHT TypeMesure NOT NULL,
 	DimensionBL TypeMesure NOT NULL,
 	DimensionBT TypeMesure NOT NULL,
 	DefautVisuel bit NOT NULL,
-	Commentaire TypeCommentaire NULL
+	Commentaire TypeCommentaire NULL,
+	FOREIGN KEY (IdLot) REFERENCES Lot (IdLot),
+	FOREIGN KEY (IdCategorie) REFERENCES Categorie (IdCategorie)
 )
 GO
 
 CREATE TABLE Cumul
 (
-	IdLot TypeIdLot REFERENCES Lot(IdLot) NOT NULL,
-	IdCategorie TypeIdCategorie REFERENCES Categorie (IdCategorie) NOT NULL,
+	IdLot int REFERENCES Lot(IdLot) NOT NULL,
+	IdCategorie TypeCategorie REFERENCES Categorie (IdCategorie) NOT NULL,
 	NbrPiece int NOT NULL,
 	PRIMARY KEY (IdLot, IdCategorie)
 )
