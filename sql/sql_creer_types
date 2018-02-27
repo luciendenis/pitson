@@ -8,9 +8,14 @@ CREATE TYPE TypeStat
 FROM DECIMAL(9,7)
 NULL
 
-/* type nom modèle */
+/* type ID modèle */
 CREATE TYPE TypeIDModele
 FROM VARCHAR(12)
+NULL
+
+/* type nom presse */
+CREATE TYPE TypeNomPresse
+FROM VARCHAR(15)
 NULL
 
 /* type état, pour l'état de la production et du contrôle (3 valeurs possibles : EN ATTENTE, EN COURS, TERMINE) */
