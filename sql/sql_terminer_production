@@ -15,7 +15,7 @@ AS
 	DECLARE @retour int;
 	BEGIN TRY
 		-- Verification que les données ne sont pas null
-		IF @IdLot IS NULL
+		IF @IdLot IS NULL OR @IdLot = ''
 		BEGIN
 			SET @retour = 1;
 			SET @msg = 'Id du lot manquant';
