@@ -22,6 +22,11 @@ BEGIN
 			SET @codeRetour = 1;
 			SET @messageRetour = 'Le paramètre 1 (@employe) ne peut être null';
 		END
+	ELSE IF @employe = 'dbo'
+		BEGIN
+			SET @codeRetour = 2;
+			SET @messageRetour = 'Le paramètre 1 (@employe) ne peut être ''dbo''. Le propriétaire de la base est un utilisateur réservé.';
+		END
 	ELSE IF @role IS NOT NULL AND @role NOT IN ('ResponsableApplication', 'ResponsableAtelier', 'ResponsablePresse', 'Controleur', 'Magasinier', 'ResponsableQualite')
 		BEGIN
 			SET @codeRetour = 1;
