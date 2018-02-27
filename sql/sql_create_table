@@ -1,0 +1,86 @@
+/***************************************************
+****************Création des Tables*****************
+***************************************************/
+
+CREATE TABLE Machine
+(
+	IdPresse int PRIMARY KEY IDENTITY (1,1),
+	LibelléPresse varchar(15) UNIQUE NOT NULL
+)
+GO
+
+CREATE TABLE Modele
+(
+	IdModel TypeIdModel PRIMARY KEY,
+	Diametre TypeMesure NOT NULL,
+	Obsolete BIT NOT NULL
+)
+GO
+
+CREATE TABLE Categorie
+(
+	IdCategorie TypeCategorie PRIMARY KEY,
+	ToleranceMini TypeMesure NULL,
+	ToleranceMaxi TypeMesure NULL
+)
+GO
+
+CREATE TABLE Stock
+(
+	IdModel TypeIdModel REFERENCES Model (IdModel) NOT NULL,
+	IdCategorie TypeIdCategorie REFERENCES Categorie (IdCategorie) NOT NULL,
+	QtStock int NOT NULL,
+	SeuilMini int NOT NULL,
+	PRIMARY KEY (IdModel, IdCategorie)
+)
+GO 
+
+CREATE TABLE Lot
+(
+	IdLot int PRIMARY KEY IDENTITY (1,1),
+	DateFabtication DATETIME NOT NULL,
+	EtatProduction TypeEtat NOT NULL,
+	EtatControl TypeEtat NOT NULL,
+	FOREIGN KEY (IdModel) REFERENCES Model (IDModel),
+	MoyenneHL TypeStat NULL,
+	MoyenneHT TypeStat NULL,
+	MoyenneBL TypeStat NULL,
+	MoyenneBT TypeStat NULL,
+	MiniHL TypeMesure NULL,
+	MiniHT TypeMesure NULL,
+	MiniBL TypeMesure NULL,
+	MiniBT TypeMesure NULL,
+	MaxiHL TypeMesure NULL,
+	MaxiHT TypeMesure NULL,
+	MaxiBL TypeMesure NULL,
+	MaxiBT TypeMesure NULL,
+	EcartTypeHL TypeStat NULL,
+	EcartTypeHT TypeStat NULL,
+	EcartTypeBL TypeStat NULL,
+	EcartTypeBT TypeStat NULL,
+	NbrPieceDemande int NOT NULL
+)
+GO
+
+CREATE TABLE Piece
+(
+	IdPiece int PRIMARY KEY IDENTITY (1,1),
+	FOREIGN KEY (IdLot) REFERENCES Lot (IdLot),
+	FOREIGN KEY (IdCategorie) REFERENCES Categorie (IdCategorie),
+	DimensionHL TypeMesure NOT NULL,
+	DimensionHT TypeMesure NOT NULL,
+	DimensionBL TypeMesure NOT NULL,
+	DimensionBT TypeMesure NOT NULL,
+	DefautVisuel bit NOT NULL,
+	Commentaire TypeCommentaire NULL
+)
+GO
+
+CREATE TABLE Cumul
+(
+	IdLot TypeIdLot REFERENCES Lot(IdLot) NOT NULL,
+	IdCategorie TypeIdCategorie REFERENCES Categorie (IdCategorie) NOT NULL,
+	NbrPiece int NOT NULL,
+	PRIMARY KEY (IdLot, IdCategorie)
+)
+GO
