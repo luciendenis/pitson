@@ -13,16 +13,6 @@ CREATE TYPE TypeIDModele
 FROM VARCHAR(12)
 NULL
 
-/* type numero de presse */
-CREATE TYPE TypeIDPresse
-FROM INT
-NULL
-
-/* type numéro de lot */
-CREATE TYPE TypeIDLot
-FROM INT
-NULL
-
 /* type état, pour l'état de la production et du contrôle (3 valeurs possibles : EN ATTENTE, EN COURS, TERMINE) */
 CREATE TYPE TypeEtat
 FROM VARCHAR(10)
