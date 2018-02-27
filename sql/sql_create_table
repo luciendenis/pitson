@@ -40,7 +40,7 @@ GO
 CREATE TABLE Lot
 (
 	IdLot int PRIMARY KEY IDENTITY (1,1),
-	DateFabtication DATETIME NOT NULL,
+	DateFabrication DATETIME NOT NULL,
 	EtatProduction TypeEtat CHECK (EtatProduction IN ('Attente', 'EnCour', 'Termine')) NOT NULL,
 	EtatControl TypeEtat CHECK (EtatControl IN ('Attente', 'EnCour','Termine')) NOT NULL,
 	IdModele TypeIDModele REFERENCES Modele (IdModele) ON UPDATE CASCADE ,
